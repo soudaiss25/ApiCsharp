@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\ContratLocationController;
+use App\Http\Controllers\Api\PaiementController;
+use App\Http\Controllers\Api\ProprietaireController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+use App\Http\Controllers\Api\AppartementController;
+
+Route::apiResource('appartements', AppartementController::class);
+
+
+Route::apiResource('users', UserController::class);
+Route::apiResource('proprietaires', ProprietaireController::class);
+Route::apiResource('contrat-locations', ContratLocationController::class);
+Route::apiResource('paiements', PaiementController::class);
+
