@@ -31,3 +31,8 @@ Route::apiResource('proprietaires', ProprietaireController::class);
 Route::apiResource('contrat-locations', ContratLocationController::class);
 Route::apiResource('paiements', PaiementController::class);
 
+use App\Http\Controllers\Api\AuthController;
+
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/setup-admin', [UserController::class, 'setupAdmin']);
+
