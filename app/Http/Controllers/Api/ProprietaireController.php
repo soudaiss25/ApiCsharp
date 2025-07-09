@@ -4,46 +4,63 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Proprietaire;
+use App\Models\Personne;
 
 class ProprietaireController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Proprietaire::with('personne')->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_personne' => 'required|exists:personnes,id_personne',
+            'ninea' => 'required|string|max:20',
+            'rccm' => 'required|string|max:20',
+        ]);
+
+        $proprietaire = Proprietaire::create($request->all());
+
+        return response()->json($proprietaire, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $proprietaire = Proprietaire::with('personne')->find($id);
+        if (!$proprietaire) {
+            return response()->json(['message' => 'Propriétaire non trouvé'], 404);
+        }
+        return response()->json($proprietaire);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $proprietaire = Proprietaire::find($id);
+        if (!$proprietaire) {
+            return response()->json(['message' => 'Propriétaire non trouvé'], 404);
+        }
+
+        $request->validate([
+            'id_personne' => 'sometimes|exists:personnes,id_personne',
+            'ninea' => 'sometimes|string|max:20',
+            'rccm' => 'sometimes|string|max:20',
+        ]);
+
+        $proprietaire->update($request->all());
+        return response()->json($proprietaire);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $proprietaire = Proprietaire::find($id);
+        if (!$proprietaire) {
+            return response()->json(['message' => 'Propriétaire non trouvé'], 404);
+        }
+
+        $proprietaire->delete();
+        return response()->json(['message' => 'Suppression réussie']);
     }
 }
