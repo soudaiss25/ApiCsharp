@@ -35,4 +35,5 @@ use App\Http\Controllers\Api\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/setup-admin', [UserController::class, 'setupAdmin']);
+Route::put('/users/{id}/update-password', [UserController::class, 'updatePassword']);
 

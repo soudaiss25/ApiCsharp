@@ -27,7 +27,7 @@ class AuthController extends Controller
         }
 
         // Vérifie si l'utilisateur a un rôle autorisé
-        if (!in_array($user->role, ['admin', 'gestionnaire'])) {
+        if (!in_array($user->role, ['admin', 'Gestionnaire'])) {
             return response()->json([
                 'message' => 'Accès refusé : rôle non autorisé'
             ], 403);
@@ -40,6 +40,7 @@ class AuthController extends Controller
                 'nom' => $user->personne->nom ?? null,
                 'prenom' => $user->personne->prenom ?? null,
                 'email' => $user->personne->email ?? null,
+                'status' => $user->status,
                 'role' => $user->role,
             ]
         ]);

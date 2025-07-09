@@ -153,5 +153,27 @@ class UserController extends Controller
             'user' => $user
         ], 201);
     }
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'mot_de_passe' => 'required|string|min:6',
+        ]);
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+
+        $user->mot_de_passe = Hash::make($request->mot_de_passe);
+        $user->status = "actif";
+        $user->save();
+
+        return response()->json([
+            'message' => 'Mot de passe mis à jour avec succès',
+            'user' => $user
+        ]);
+    }
+
 
 }
